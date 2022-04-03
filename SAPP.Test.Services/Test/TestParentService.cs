@@ -55,6 +55,8 @@ namespace SAPP.Test.Services.Test
 
             await _repositoryManager.TestParentRepository.InsertAsync(entity, cancellationToken);
 
+            await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+
         }
     }
 }

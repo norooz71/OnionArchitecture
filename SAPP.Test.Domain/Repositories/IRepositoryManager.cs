@@ -7,5 +7,7 @@ namespace SAPP.Test.Domain.Repositories
         ITestParentRepository TestParentRepository { get; }
 
         ITestChildRepository TestChildRepository { get; }   
+
+        IUnitOfWork UnitOfWork { get; }
     }
 }

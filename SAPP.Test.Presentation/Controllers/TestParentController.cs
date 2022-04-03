@@ -23,22 +23,22 @@ namespace SAPP.Test.Presentation.Controllers
            var result= await _serviceManager.testParentService.GetAllAsync(cancellationToken);
 
             return Ok(result);
-        } 
-/*
-        [HttpGet]
-        public async Task<IActionResult> GetTestParentById(int id ,CancellationToken cancellationToken)
+        }
+
+        [HttpGet("/{id}")]
+        public async Task<IActionResult> GetTestParentById(int id, CancellationToken cancellationToken)
         {
-            var result=await _serviceManager.testParentService.GetByIdAsync(id,cancellationToken);
+            var result = await _serviceManager.testParentService.GetByIdAsync(id, cancellationToken);
 
             return Ok(result);
-                        
+
         }
 
         [HttpPost]
         public async Task<IActionResult> PostTestParent(TestParentDto testParentDto, CancellationToken cancellationToken)
         {
-            await _serviceManager.testParentService.InsertAsync(testParentDto,cancellationToken);
+            await _serviceManager.testParentService.InsertAsync(testParentDto, cancellationToken);
             return Ok();
-        }*/
+        }
     }
 }

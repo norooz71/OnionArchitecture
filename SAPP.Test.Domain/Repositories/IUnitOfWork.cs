@@ -9,6 +9,6 @@ namespace SAPP.Test.Domain.Repositories
 {
     public interface IUnitOfWork
     {
-        Task<int> SaveChanges(CancellationToken cancellationToken);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
