@@ -13,11 +13,11 @@ namespace SAPP.Test.Services
 
         private readonly Lazy<ITestParentService> _lazyTestParentService;
 
-        public ServiceManager(IRepositoryManager repositoryManager,IMapper mapper)
+        public ServiceManager(IUnitOfWork unitOfWork,IMapper mapper)
         {
-            _lazyTestChildService = new Lazy<ITestChildService>(() => new TestChildService(repositoryManager, mapper));
+            _lazyTestChildService = new Lazy<ITestChildService>(() => new TestChildService(unitOfWork, mapper));
 
-            _lazyTestParentService=new Lazy<ITestParentService>(() =>new TestParentService(repositoryManager,mapper));  
+            _lazyTestParentService=new Lazy<ITestParentService>(() =>new TestParentService(unitOfWork,mapper));  
 
         }
 

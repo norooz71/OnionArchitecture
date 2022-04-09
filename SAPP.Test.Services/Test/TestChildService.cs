@@ -4,6 +4,7 @@ using SAPP.Test.Domain.Entities.Test;
 using SAPP.Test.Domain.Repositories;
 using SAPP.Test.Services.Abstractions.Test;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,25 +12,27 @@ namespace SAPP.Test.Services.Test
 {
     public class TestChildService : ITestChildService
     {
-        private readonly IRepositoryManager _repositoryManager;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public TestChildService(IRepositoryManager repositoryManager,IMapper mapper)
+        public TestChildService(IUnitOfWork unitOfWork,IMapper mapper)
         {
-            _repositoryManager= repositoryManager;
+            _unitOfWork= unitOfWork;
 
             _mapper = mapper;
         }
-        public async void Delete(int id)
+        public async Task Delete(int id,CancellationToken cancellationToken)
         {
-            var testChild=await _repositoryManager.TestChildRepository.GetByIdAsync(id);
+            var testChild = await _unitOfWork.GetRepository<TestChild>().GetByCondition(t => t.Id == id, cancellationToken);
 
-            _repositoryManager.TestChildRepository.Remove(testChild);
+            _unitOfWork.GetRepository<TestChild>().Delete(testChild.FirstOrDefault());
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<TestChildDto>> GetAllAsync(int id,CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<TestChildDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var testChildren = await _repositoryManager.TestChildRepository.GetAllByTestIdAsync(id, cancellationToken);
+            var testChildren = await _unitOfWork.GetRepository<TestChild>().GetAll(cancellationToken);
 
             var result=_mapper.Map<IEnumerable<TestChildDto>>(testChildren);
 
@@ -38,7 +41,7 @@ namespace SAPP.Test.Services.Test
 
         public async Task<TestChildDto> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var testChildDto = await _repositoryManager.TestChildRepository.GetByIdAsync(id, cancellationToken);
+            var testChildDto = await _unitOfWork.GetRepository<TestChild>().GetByCondition(t=>t.Equals(id), cancellationToken);
 
             var result=_mapper.Map<TestChildDto>(testChildDto);
             
@@ -49,7 +52,10 @@ namespace SAPP.Test.Services.Test
         {
             var testChild=_mapper.Map<TestChild>(testChildDto);
 
-            await _repositoryManager.TestChildRepository.Insert(testChild);
+            await _unitOfWork.GetRepository<TestChild>().Post(testChild,cancellationToken);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
         }
     }
 }

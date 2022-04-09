@@ -15,7 +15,7 @@ builder.Services.AddControllers().AddApplicationPart(typeof(TestParentController
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IServiceManager,ServiceManager>();
-builder.Services.AddScoped<IRepositoryManager,RepositoryManager>();
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 
 builder.Services.AddDbContext<RepositoryDbContext>(dbBuilder =>
 {

@@ -4,7 +4,7 @@ using SAPP.Test.Domain.Entities.Test;
 
 namespace SAPP.Test.Persistance.Repositories;
 
-public sealed class RepositoryDbContext : DbContext
+public sealed class RepositoryDbContext :DbContext 
 {
     public RepositoryDbContext(DbContextOptions options) : base(options)
     { }

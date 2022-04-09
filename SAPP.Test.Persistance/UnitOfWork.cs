@@ -3,17 +3,21 @@ using SAPP.Test.Persistance.Repositories;
 using System.Threading;
 using System.Threading.Tasks;
 
-internal class UnitOfWork : IUnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
     private readonly RepositoryDbContext _repositoryDbContext;
 
     public UnitOfWork(RepositoryDbContext repositoryDbContext)
     {
-        _repositoryDbContext = repositoryDbContext;
+        this._repositoryDbContext = repositoryDbContext;
     }
 
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken) => 
-        _repositoryDbContext.SaveChangesAsync(cancellationToken);
+    public IGenericRepository<T> GetRepository<T>() where T : class =>
+        new GenericRepository<T>(_repositoryDbContext);
+    
 
+    public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)=>
+        await _repositoryDbContext.SaveChangesAsync(cancellationToken);
+    
 }
 

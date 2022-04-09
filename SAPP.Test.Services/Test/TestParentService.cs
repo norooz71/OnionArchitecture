@@ -5,6 +5,7 @@ using SAPP.Test.Domain.Exeptions.Test;
 using SAPP.Test.Domain.Repositories;
 using SAPP.Test.Services.Abstractions.Test;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,23 +13,25 @@ namespace SAPP.Test.Services.Test
 {
     public sealed class TestParentService : ITestParentService
     {
-        private readonly IRepositoryManager _repositoryManager;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         
-        public TestParentService(IRepositoryManager repositoryManager,IMapper mapper)
+        public TestParentService(IUnitOfWork unitOfWork,IMapper mapper)
         {
-            this._repositoryManager = repositoryManager; 
+            this._unitOfWork = unitOfWork; 
             this._mapper = mapper;
         }
         public async Task Delete(int id,CancellationToken cancellationToken)
         {
-            var testParent = await _repositoryManager.TestParentRepository.GetById(id, cancellationToken);
-            _repositoryManager.TestParentRepository.Remove(testParent);
+            var testParent = await _unitOfWork.GetRepository<TestParent>().GetByCondition(t => t.Id == id, cancellationToken);
+
+            _unitOfWork.GetRepository<TestParent>().Delete(testParent.FirstOrDefault());
+
         }
 
         public async Task<IEnumerable<TestParentDto>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var testParents=await _repositoryManager.TestParentRepository.GetAllAsync(cancellationToken);
+            var testParents = await _unitOfWork.GetRepository<TestParent>().GetAll(cancellationToken);
            
             var result=_mapper.Map<IEnumerable<TestParentDto>>(testParents);
 
@@ -37,7 +40,7 @@ namespace SAPP.Test.Services.Test
 
         public async Task<TestParentDto> GetByIdAsync(int id, CancellationToken cancellationToken = default)
         {
-            var testParent=await _repositoryManager.TestParentRepository.GetById(id, cancellationToken);
+            var testParent=await _unitOfWork.GetRepository<TestParent>().GetByCondition(t=>t.Id == id, cancellationToken);
 
             if (testParent==null)
             {
@@ -53,9 +56,9 @@ namespace SAPP.Test.Services.Test
         {
             var entity=_mapper.Map<TestParent>(testDto);
 
-            await _repositoryManager.TestParentRepository.InsertAsync(entity, cancellationToken);
+            await _unitOfWork.GetRepository<TestParent>().Post(entity,cancellationToken);
 
-            await _repositoryManager.UnitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         }
     }
