@@ -19,9 +19,5 @@ namespace SAPP.Test.Domain.Exeptions
             Type = type;
         }
 
-        public override string ToString()
-        {
-            return JsonSerializer.Serialize(this);
-        }
     }
 }

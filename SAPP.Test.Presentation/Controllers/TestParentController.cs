@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SAPP.Test.Contracts.Dtos;
+using SAPP.Test.Presentation.Responses;
 using SAPP.Test.Services.Abstractions;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,7 +24,7 @@ namespace SAPP.Test.Presentation.Controllers
         { 
            var result= await _serviceManager.testParentService.GetAllAsync(cancellationToken);
 
-            return Ok(result);
+            return Ok(new BaseResponse<IEnumerable<TestParentDto>>(true,200,result,null));
         }
 
         [HttpGet("/{id}")]
@@ -30,7 +32,7 @@ namespace SAPP.Test.Presentation.Controllers
         {
             var result = await _serviceManager.testParentService.GetByIdAsync(id, cancellationToken);
 
-            return Ok(result);
+            return Ok(new BaseResponse<TestParentDto>(true,200,result,null));
 
         }
 
