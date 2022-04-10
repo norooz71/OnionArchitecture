@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace SAPP.Test.Domain.Exeptions
 {
-    public class NotFoundException:Exception
+    public enum ExceptionLevel
     {
-        protected NotFoundException(string message) : base(message)
-        {
-
-        }
+        Domain,
+        Repository,
+        Persistance,
+        Presentation,
+        Service,
+        Web
     }
 }

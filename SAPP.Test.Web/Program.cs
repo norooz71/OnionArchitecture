@@ -5,6 +5,7 @@ using SAPP.Test.Persistance.Repositories;
 using SAPP.Test.Presentation.Controllers;
 using SAPP.Test.Services;
 using SAPP.Test.Services.Abstractions;
+using SAPP.Test.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +41,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<CustomExceptionMiddleware>();
 
 app.UseAuthorization();
 

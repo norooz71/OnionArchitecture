@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SAPP.Test.Contracts.Dtos;
 using SAPP.Test.Domain.Entities.Test;
-using SAPP.Test.Domain.Exeptions.Test;
+using SAPP.Test.Domain.Exeptions;
 using SAPP.Test.Domain.Repositories;
 using SAPP.Test.Services.Abstractions.Test;
 using System.Collections.Generic;
@@ -42,12 +42,12 @@ namespace SAPP.Test.Services.Test
         {
             var testParent=await _unitOfWork.GetRepository<TestParent>().GetByCondition(t=>t.Id == id, cancellationToken);
 
-            if (testParent==null)
+            if (testParent.FirstOrDefault()==null)
             {
-                throw new TestParentNotFoundException(id);
+                throw new GlobalException(ExceptionLevel.Service,ExceptionType.NotFound, ExceptionMessages.NullArgument);
             }
 
-            var result=_mapper.Map<TestParentDto>(testParent);
+            var result=_mapper.Map<TestParentDto>(testParent.FirstOrDefault());
 
             return result;
         }
