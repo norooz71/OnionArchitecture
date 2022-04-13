@@ -44,7 +44,7 @@ namespace SAPP.Test.Services.Test
 
             if (testParent.FirstOrDefault()==null)
             {
-                throw new GlobalException(ExceptionLevel.Service,ExceptionType.NotFound, ExceptionMessages.NullArgument);
+                throw new GlobalException(ExceptionLevel.Service,ExceptionType.NotFound, ExceptionMessages.NotFound);
             }
 
             var result=_mapper.Map<TestParentDto>(testParent.FirstOrDefault());

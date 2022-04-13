@@ -9,9 +9,9 @@ namespace SAPP.Test.Domain.Exeptions
 {
     public class GlobalException : Exception
     {
-        private readonly ExceptionLevel Level;
+        public readonly ExceptionLevel Level;
 
-        private readonly ExceptionType Type;
+        public readonly ExceptionType Type;
 
         public GlobalException(ExceptionLevel level, ExceptionType type, string message) : base(message)
         {

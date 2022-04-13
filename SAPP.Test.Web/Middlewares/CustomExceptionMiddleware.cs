@@ -1,4 +1,7 @@
-﻿using SAPP.Test.Domain.Exeptions;
+﻿using Microsoft.AspNetCore.Http;
+using SAPP.Test.Domain.Entities.Test;
+using SAPP.Test.Domain.Exeptions;
+using SAPP.Test.Presentation.Responses;
 
 namespace SAPP.Test.Web.Middlewares
 {
@@ -21,9 +24,34 @@ namespace SAPP.Test.Web.Middlewares
             {
                 _context.Response.ContentType = "application/json";
                 _context.Response.StatusCode = _context.Response.StatusCode;
-                await _context.Response.WriteAsync(ex.ToString());
+
+
+                var errorMessages = new List<string>();
+
+                int statusCode = 0;
+
+                switch (ex.Type)
+                {
+                    case ExceptionType.NotFound:
+                        errorMessages.Add(ex.Message);
+                        statusCode = 404;
+                        break;
+
+                    case ExceptionType.InvalidArgument:
+                        errorMessages.Add(ex.Message);
+                        statusCode = 400;
+                        break;
+
+                    default:
+                        errorMessages.Add(ExceptionMessages.InternalError);
+                        statusCode = 500;
+                        break;
+                }
+
+                await _context.Response.WriteAsync(new BaseResponse<object>(true, statusCode, null, errorMessages).ToString());
             }
-            
+
         }
     }
+
 }

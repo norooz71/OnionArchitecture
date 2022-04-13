@@ -9,13 +9,13 @@ namespace SAPP.Test.Presentation.Responses;
 
 public record BaseResponse<T> where T : class
 {
-    private bool IsSuccess { get; set; }
+    public bool IsSuccess { get; set; }
 
-    private int StatusCode { get; set; }
-
-    private T Result { get; set; }
-
-    private IEnumerable<string> Messages { get; set; }
+    public int StatusCode { get; set; }
+    
+    public T Result { get; set; }
+    
+    public IEnumerable<string> Messages { get; set; }
 
     public BaseResponse(bool isSuccess, int statusCode, T result, IEnumerable<string> messages)
     {

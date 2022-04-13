@@ -4,7 +4,7 @@
     {
         NotFound,
         Business,
-        NullArgument,
+        InvalidArgument,
 
     }
 }
