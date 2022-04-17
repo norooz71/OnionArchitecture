@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SAPP.Test.Contracts.Utilities.Logger;
 using SAPP.Test.Domain.Repositories;
 using SAPP.Test.Services.Abstractions;
 using SAPP.Test.Services.Abstractions.Test;
@@ -13,7 +14,7 @@ namespace SAPP.Test.Services
 
         private readonly Lazy<ITestParentService> _lazyTestParentService;
 
-        public ServiceManager(IUnitOfWork unitOfWork,IMapper mapper)
+        public ServiceManager(IUnitOfWork unitOfWork,IMapper mapper,ILoggerManager logger)
         {
             _lazyTestChildService = new Lazy<ITestChildService>(() => new TestChildService(unitOfWork, mapper));
 

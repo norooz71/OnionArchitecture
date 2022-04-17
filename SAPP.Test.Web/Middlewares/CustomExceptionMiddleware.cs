@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SAPP.Test.Contracts.Utilities.Logger;
 using SAPP.Test.Domain.Entities.Test;
 using SAPP.Test.Domain.Exeptions;
 using SAPP.Test.Presentation.Responses;
@@ -9,9 +10,13 @@ namespace SAPP.Test.Web.Middlewares
     {
         private readonly RequestDelegate _next;
 
-        public CustomExceptionMiddleware(RequestDelegate next)
+        private readonly ILoggerManager _logger;
+
+        public CustomExceptionMiddleware(RequestDelegate next,ILoggerManager logger)
         {
             _next = next;
+
+            _logger = logger;   
         }
 
         public async Task InvokeAsync(HttpContext _context)
@@ -22,6 +27,8 @@ namespace SAPP.Test.Web.Middlewares
             }
             catch (GlobalException ex)
             {
+                _logger.Error(ex.Message);
+
                 _context.Response.ContentType = "application/json";
                 _context.Response.StatusCode = _context.Response.StatusCode;
 

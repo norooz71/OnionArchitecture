@@ -232,3 +232,4 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+/SAPP.Test.Web/Projects/Blog-AccountOwner/Project/internal_logs/internallog.txt
